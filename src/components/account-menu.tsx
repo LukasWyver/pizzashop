@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { BuildingIcon, ChevronDownIcon, LogOutIcon } from 'lucide-react'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 import { getManagedRestaurant } from '@/api/get-managed-restaurant'
@@ -21,6 +22,7 @@ import { Skeleton } from './ui/skeleton'
 
 export function AccountMenu() {
   const navigate = useNavigate()
+  const [openStoreProfileDialog, setOpenStoreProfileDialog] = useState(false)
 
   const { data: profile, isLoading: isLoadingProfile } = useQuery({
     queryKey: ['profile'],
@@ -43,7 +45,10 @@ export function AccountMenu() {
   })
 
   return (
-    <Dialog>
+    <Dialog
+      open={openStoreProfileDialog}
+      onOpenChange={setOpenStoreProfileDialog}
+    >
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
           <Button
@@ -98,7 +103,9 @@ export function AccountMenu() {
         </DropdownMenuContent>
       </DropdownMenu>
 
-      <StoreProfileDialog />
+      <StoreProfileDialog
+        isOpenStoreProfileDialog={setOpenStoreProfileDialog}
+      />
     </Dialog>
   )
 }
